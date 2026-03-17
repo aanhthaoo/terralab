@@ -1,0 +1,171 @@
+<!DOCTYPE HTML>
+<!--
+	Massively by HTML5 UP
+	html5up.net | @ajlkn
+	Free for personal and commercial use under the CCA 3.0 license (html5up.net/license)
+-->
+<html>
+
+<head>
+	<title id="page-title">Chi tiết sản phẩm - TerraLab</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+	<noscript>
+		<link rel="stylesheet" href="assets/css/noscript.css" />
+	</noscript>
+</head>
+
+<body class="is-loading">
+
+	<!-- Wrapper -->
+	<div id="wrapper">
+
+		<!-- Header -->
+		<header id="header">
+			<a href="index.html" class="logo">TerraLab</a>
+		</header>
+
+		<!-- Nav -->
+		<nav id="nav">
+			<ul class="links">
+				<li><a href="index.html">Trang chủ</a></li>
+				<li class="active"><a href="#">Chi tiết sản phẩm</a></li>
+			</ul>
+			<ul class="icons">
+				<li><a href="#" class="icon fa-twitter"><span class="label">Twitter</span></a></li>
+				<li><a href="#" class="icon fa-facebook"><span class="label">Facebook</span></a></li>
+				<li><a href="#" class="icon fa-instagram"><span class="label">Instagram</span></a></li>
+			</ul>
+		</nav>
+
+		<!-- Main -->
+		<div id="main">
+
+			<!-- Post -->
+			<section class="post">
+				<header class="major">
+					<h1 id="detail-title">Đang tải...</h1>
+					<p id="detail-short-desc"></p>
+				</header>
+				<div class="image main">
+					<img id="detail-image" src="" alt="" />
+				</div>
+				<div id="detail-content"></div>
+
+				<!-- Nút quay lại -->
+				<ul class="actions">
+					<li><a href="index.html" class="button">← Quay lại trang chủ</a></li>
+				</ul>
+			</section>
+
+		</div>
+
+		<!-- Footer -->
+		<footer id="footer">
+			<section>
+				<form method="post" action="#">
+					<div class="field">
+						<label for="name">Tên</label>
+						<input type="text" name="name" id="name" />
+					</div>
+					<div class="field">
+						<label for="email">Email</label>
+						<input type="text" name="email" id="email" />
+					</div>
+					<div class="field">
+						<label for="message">Lời nhắn</label>
+						<textarea name="message" id="message" rows="3"></textarea>
+					</div>
+					<ul class="actions">
+						<li><input type="submit" value="Gửi" /></li>
+					</ul>
+				</form>
+			</section>
+			<section class="split contact">
+				<section class="alt">
+					<h3>Địa chỉ</h3>
+					<p>Showroom số 1A Vũ Văn Cẩn, TTTM Thiên Sơn Plaza,<br />
+						Vạn Phúc, Hà Đông, Hà Nội</p>
+				</section>
+				<section>
+					<h3>Điện thoại</h3>
+					<p>(+84) 876652555</p>
+				</section>
+				<section>
+					<h3>Email</h3>
+					<p>contact.terralabvn@gmail.com</p>
+				</section>
+				<section>
+					<h3>Mạng xã hội</h3>
+					<ul class="icons alt">
+						<li><a href="#" class="icon alt fa-twitter"><span class="label">Twitter</span></a></li>
+						<li><a href="#" class="icon alt fa-facebook"><span class="label">Facebook</span></a></li>
+						<li><a href="#" class="icon alt fa-instagram"><span class="label">Instagram</span></a></li>
+					</ul>
+				</section>
+			</section>
+		</footer>
+
+	</div>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.scrollex.min.js"></script>
+	<script src="assets/js/jquery.scrolly.min.js"></script>
+	<script src="assets/js/skel.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+	<!-- Script tải dữ liệu sản phẩm từ JSON -->
+	<script>
+		(function () {
+			// Đọc tham số ?id= từ URL
+			var params = new URLSearchParams(window.location.search);
+			var productId = params.get('id');
+
+			if (!productId) {
+				showError('Không có sản phẩm nào được chọn.');
+				return;
+			}
+
+			// Tải dữ liệu từ file JSON
+			fetch('data/products.json')
+				.then(function (response) {
+					if (!response.ok) throw new Error('Không thể tải dữ liệu.');
+					return response.json();
+				})
+				.then(function (products) {
+					// Tìm sản phẩm theo id
+					var product = products.find(function (p) {
+						return p.id === productId;
+					});
+
+					if (!product) {
+						showError('Không tìm thấy sản phẩm "' + productId + '".');
+						return;
+					}
+
+					// Đổ dữ liệu vào các placeholder
+					document.getElementById('page-title').textContent = product.title + ' - TerraLab';
+					document.getElementById('detail-title').textContent = product.title;
+					document.getElementById('detail-short-desc').textContent = product.short_desc;
+					document.getElementById('detail-image').src = product.image;
+					document.getElementById('detail-image').alt = product.title;
+					document.getElementById('detail-content').innerHTML = product.detail_content;
+				})
+				.catch(function (err) {
+					showError('Đã xảy ra lỗi khi tải dữ liệu: ' + err.message);
+				});
+
+			function showError(msg) {
+				document.getElementById('detail-title').textContent = 'Không tìm thấy sản phẩm';
+				document.getElementById('detail-short-desc').textContent = msg;
+				document.getElementById('detail-image').style.display = 'none';
+			}
+		})();
+	</script>
+
+</body>
+
+</html>
